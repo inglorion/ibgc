@@ -1,0 +1,33 @@
+init
+0400(8960) total: 8960
+
+alloc 1
+0404(8959) total: 8959
+
+reclaim none
+tags: 0e 04 0c 08 08
+tags: 06 04 04 00 00
+0414(8955) total: 8955
+
+reclaim mid
+tags: 0e 04 08 08 08
+tags: 06 04 00 08 00
+040c(1),0414(8955) total: 8956
+
+reclaim coalesce after
+tags: 0e 00 0c 08 08
+tags: 06 00 04 00 08
+0410(8956) total: 8956
+
+reclaim coalesce before
+tags: 0e 00 0c 0c 08
+tags: 0e 00 04 04 00
+0414(8955) total: 8955
+0400(2),0414(8955) total: 8957
+tags: 0e 00 04 0c 08
+0400(3),0414(8955) total: 8958
+
+reclaim coalesce both
+tags: 0e 00 00 08
+0400(2),040c(8957) total: 8959
+0400(8960) total: 8960
