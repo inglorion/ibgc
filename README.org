@@ -3,15 +3,15 @@
 
 Copyright (c) 2022 Robbert Haarman
 
-The itty-bitty garbage collector (ibgc) is a simple garbage collector
+The itty-bitty garbage collector (IBGC) is a simple garbage collector
 designed for systems where available code and data space is limited.
 
-Features of ibgc:
+Features of IBGC:
 
  - A memory allocation consists of one or more cells, each of which
    is large enough to hold a pointer.
 
- - Ibgc maintains a few bits of metadata for each cell. The algorithm
+ - IBGC maintains a few bits of metadata for each cell. The algorithm
    uses 3 bits for the first cell of an allocation and 2 bits for
    subsequent cells in the same allocation.
 
@@ -20,11 +20,11 @@ Features of ibgc:
    is no need for tag bits inside integers or pointers).
 
  - The metadata bits can be read and modified by the program, provided
-   that bits which are significant to ibgc are set correctly. One
+   that bits which are significant to IBGC are set correctly. One
    possible use case for this is to store type information in the
    metadata.
 
- - Ibgc uses a non-copying mark-sweep algorithm to reclaim memory.
+ - IBGC uses a non-copying mark-sweep algorithm to reclaim memory.
 
  - Both tracing and reclamation require only a small amount of stack
    space that does not vary with the object graph.
