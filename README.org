@@ -32,3 +32,62 @@ Features of IBGC:
 The current implementation is a proof of concept used to experiment
 with the metadata format and algorithms. At the time of writing,
 it consists of about 120 lines of C code as counted by SLOCCount.
+
+
+* Limitations
+
+The Itty-Bitty Garbage Collector was originally designed for small
+programming language implementations. It makes some pretty strong
+assumptions: the memory it manages is a fixed-size array of cells,
+and the program is responsible for informing the collector which
+values are pointers to be followed, and which aren't. These assumptions
+can easily be fulfilled by a newly developed programming language
+implementation, but are unlikely to be true of software not
+specifically written to work with IBGC.
+
+The Itty-Bitty Garbage Collector requires that all values it treats as
+pointers point to the first cell of the pointed-to object. That is,
+all values for which the pointer tag is set to 1 in the metadata and
+all pointers passed to gc_trace() must point to the beginning of
+the allocation the address is part of.
+
+
+* Usage
+
+IBGC needs some support from programs that use it. Perhaps most
+notably, IBGC requires the program to tell it which values it
+should treat as pointers to follow, and which values not to, by
+setting the pointer bits in the metadata. This means that every
+assignment to a cell of memory may also require an update to the
+metadata for that cell.
+
+The test program ibgc_test.c provides a working example of a
+program that uses IBGC.
+
+A (hopefully complete) list of things a program needs to do to use
+IBGC is:
+
+ 1. Define cell_t (the type of a cell) and CELL_SZ (the size of a
+    cell in bytes).
+
+ 2. Define addr_t (the type of an address) and ADDR_MASK (a value
+    that a number can be bitwise anded with to yield a value in
+    the correct range for an address). Note: addr_t must be an
+    integer type, not a pointer type.
+
+ 3. #include "ibgc.c"
+
+ 4. Call ibgc_init() before using any of the other functions in IBGC.
+
+ 5. Ensure that all values are correctly tagged as pointers that
+    IBGC should trace (pointer bit set to 1) or values that IBGC
+    should not trace (pointer bit 0).
+
+ 6. Call gc_trace() for each of the garbage collection roots
+    (objects from which all reachable objects can be reached).
+
+ 7. After gc_trace() has been called for all roots, call gc_reclaim()
+    to actually reclaim the memory used by unreachable objects.
+
+ 8. After calling gc_reclaim(), invert the mark tag:
+    ~mark_tag ^= MARK_MASK.~
