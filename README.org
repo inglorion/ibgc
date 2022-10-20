@@ -91,3 +91,14 @@ IBGC is:
 
  8. After calling gc_reclaim(), invert the mark tag:
     ~mark_tag ^= MARK_MASK.~
+
+Memory is allocated using alloc(), which takes two parameters:
+the number of cells to allocate, and a tag to store in the metadata.
+
+The tag corresponding to an allocation can be read using gettag()
+and written using settag(). Bits that are set to 1 in INFO_MASK
+can freely be used by the program, whereas the other bits in the
+tag have special meaning to the collector. Of these, the bit
+indicated by PTR_MASK must be set to 0 when a non-pointer value
+is stored in a cell, and to 1 if a pointer value is stored in
+a cell.
