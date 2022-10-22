@@ -49,6 +49,12 @@ static int hascont(addr_t p) { return (gettag(p) & CONT_MASK) != 0; }
 static addr_t nextfree(addr_t p) { return M(p); }
 static addr_t freelen(addr_t p) { return hascont(p) ? M(p + CELL_SZ) : 1; }
 
+/**
+ * Allocates ncells cells of memory and tags them with the given tag.
+ *
+ * @return the address of the first cell, or ADDR_MASK if allocation
+ *   failed (no large enough contiguous span of free cells was found).
+ */
 static addr_t alloc(addr_t ncells, uint8_t tag) {
   addr_t len, p, next, prev = ADDR_MASK;
 
@@ -59,7 +65,7 @@ static addr_t alloc(addr_t ncells, uint8_t tag) {
     prev = p;
   }
 
-  if (p == ADDR_MASK) abort(); // TODO: OOM
+  if (p == ADDR_MASK) return p; /* Out of memory. */
 
   /* Remove the cells we found from the free list. */
   if (len == 1) {
