@@ -52,6 +52,24 @@ all pointers passed to gc_trace() must point to the beginning of
 the allocation the address is part of.
 
 
+* Building
+
+The IBGC source code includes a test program (ibgc_test.c) and
+a Makefile that can be used to build and run it:
+
+#+BEGIN_EXAMPLE
+$ make
+cc -o ibgc_test -Wall -Os ibgc_test.c
+$ make check
+./ibgc_test | diff -u ibgc_test.out.expected -
+$
+#+END_EXAMPLE
+
+If all goes well, this process produces no errors, and diff shows
+no difference between the expected output from the test program
+and its actual output.
+
+
 * Usage
 
 IBGC needs some support from programs that use it. Perhaps most
