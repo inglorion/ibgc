@@ -31,7 +31,8 @@ Features of IBGC:
 
 The current implementation is a proof of concept used to experiment
 with the metadata format and algorithms. At the time of writing,
-it consists of about 120 lines of C code as counted by SLOCCount.
+it consists of about 120 lines of C code as counted by David A.
+Wheeler's 'SLOCCount'.
 
 
 * Limitations
